@@ -32,17 +32,10 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		AA9A9C252D5CEA7800351D1E /* project */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			explicitFolders = (
+				images,
+			);
 			path = project;
-			sourceTree = "<group>";
-		};
-		AA9A9C362D5CEA7B00351D1E /* projectTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = projectTests;
-			sourceTree = "<group>";
-		};
-		AA9A9C402D5CEA7B00351D1E /* projectUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = projectUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -76,8 +69,6 @@
 			isa = PBXGroup;
 			children = (
 				AA9A9C252D5CEA7800351D1E /* project */,
-				AA9A9C362D5CEA7B00351D1E /* projectTests */,
-				AA9A9C402D5CEA7B00351D1E /* projectUITests */,
 				AA9A9C242D5CEA7800351D1E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -130,9 +121,6 @@
 			dependencies = (
 				AA9A9C352D5CEA7B00351D1E /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				AA9A9C362D5CEA7B00351D1E /* projectTests */,
-			);
 			name = projectTests;
 			packageProductDependencies = (
 			);
@@ -152,9 +140,6 @@
 			);
 			dependencies = (
 				AA9A9C3F2D5CEA7B00351D1E /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				AA9A9C402D5CEA7B00351D1E /* projectUITests */,
 			);
 			name = projectUITests;
 			packageProductDependencies = (
