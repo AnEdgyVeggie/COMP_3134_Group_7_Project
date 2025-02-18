@@ -1,6 +1,6 @@
 // Logic for scrambling the word.
 
-func scrambleWord(usedWords: [String]) -> String {
+func scrambleWord(usedWords: [String]) -> (String, String) {
     // Loop controller.
     var isNewWord = false
     // Grab a random word from the predefined word list.
@@ -11,11 +11,11 @@ func scrambleWord(usedWords: [String]) -> String {
         if (!usedWords.contains(word.rawValue)) {
             isNewWord = true
             
-            let wordChars = Array(word.rawValue)
+            let word = Array(word.rawValue)
             // Scramble the letters and return as a string to display.
-            let scrambledWord = String(wordChars.shuffled())
+            let scrambledWord = String(word.shuffled())
 
-            return ("\(scrambledWord)")
+            return ("\(String(word))", "\(scrambledWord)")
         } else {
             // Else... reroll the word and loop again until the word is unique.
             word = Words.allCases.randomElement()!
