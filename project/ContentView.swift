@@ -12,18 +12,18 @@ import SwiftUI
 
 struct ContentView: View {
     let title: String = "Language Knight"
-    @State private var username = "Player Name"
+    @State private var usernamePlaceholder: String = "Player Name"
     @State private var userImage: Image? = nil
-    @State private var usernameField: String = ""
+    @State private var usernameField: String = "Player Name"
     
     
     var body: some View {
-        ZStack {
-            Color(red: 0.48, green: 0.28, blue: 0.26)
-        } // ZSTACK
-        .overlay(
+        NavigationStack {
+            ZStack {
+                Color(red: 0.48, green: 0.28, blue: 0.26)
+            } // ZSTACK
+            .overlay(
                 VStack {
-
                     Text(title)
                         .font(.system(size: 40, weight: .heavy))
                         .foregroundColor(Color(red: 0.9, green: 0.78, blue: 0.3))
@@ -38,29 +38,25 @@ struct ContentView: View {
                     }
 
                     HStack {
-                        TextField(username, text: $usernameField)
-                            .background(Color(red: 0.9, green: 0.9, blue: 0.7))
+                        TextField(usernamePlaceholder, text: $usernameField)
+                            .background(Color(red: 0.92, green: 0.85, blue: 0.7))
                             .font(.title)
                             .frame(width: 240, height: 65, alignment: .center)
                             .padding(.leading)
                             
-
-                        Button() {
-                            username = usernameField
-                            print(username)
-                        } label: {
-                            Image("feather")
-                                .background(Color(red: 0.55, green: 0.45, blue: 0.15))
-                        }
+                        Image("feather")
+                            .background(Color(red: 0.55, green: 0.45, blue: 0.15))
+                        
                     } // HSTACK
                         .fixedSize().frame(width: 332, height: 64, alignment: .center)
-                        .border(Color.black, width: 3)
-                        .background(Color(red: 0.9, green: 0.9, blue: 0.8))
+                        .border(Color.black, width: 2)
+                        .background(Color(red: 0.92, green: 0.85, blue: 0.7))
                         .padding(.bottom, 40)
                     
-                    Button {
-                    }
-                    label: {
+                    NavigationLink(destination: {
+                        PlayView(playerName: usernameField)
+
+                    }, label: {
                         Text("PLAY")
                             .font(.system(size: 42, weight: .heavy))
                             .frame(width: 150)
@@ -70,25 +66,28 @@ struct ContentView: View {
                             .padding()
                             .frame(width: 100)
                     } // BUTTON -> LABEL
+                                   
+                )
                         .fixedSize().frame(width: 332, height: 84, alignment: .center)
                         .border(Color.black, width: 3)
                         .background(Color(red: 0.9, green: 0.78, blue: 0.3))
                         .padding(.bottom, 30)
                     
                     HStack {
-                        Button() {
-                            print("Settings")
-                        } label: {
+                        NavigationLink(destination: {
+                            SettingsView()
+                        }, label: {
                             Image("setting")
                                 .resizable().frame(width: 80, height: 80)
-                        }
-                        Button() {
-                            print("leaderboard")
-                        } label: {
+                        })
+                        NavigationLink(destination: {
+                            LeaderboardView()
+                        }, label: {
                             Image("scroll")
                                 .resizable().frame(width: 80, height: 80)
                                 .padding(.leading, 100)
-                        }
+                        })
+
                     } // VSTACK
                     .fixedSize().frame(width: 200, height: 80)
                     
@@ -98,13 +97,9 @@ struct ContentView: View {
                 
             ) // OVERLAY
         .background(Color(red: 0.2, green: 0.1, blue: 0.1 ))
-    } // BODY -> VIEW
-    
-    func setUsername() {
+        } // NAVIGATION STACK
 
-    }
-        
-    
+    } // BODY -> VIEW
     
 } // CONTENT VIEW
 
