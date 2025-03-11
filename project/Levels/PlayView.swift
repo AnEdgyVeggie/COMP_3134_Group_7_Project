@@ -5,31 +5,8 @@ private let levelOne = scrambleWord(usedWords: [""])
 private let levelTwo = scrambleWord(usedWords: [levelOne.0])
 private let levelThree = scrambleWord(usedWords: [levelOne.0, levelTwo.0])
 
-struct PlayView: View {
-   
-    var playerName: String = ""
-    
-    init(playerName: String? = "Player Name") {
-        self.playerName = playerName!
-        print("game started as \(playerName!)")
-    }
-    
-    
-    // Initialize navigation.
-    @State
-    private var path = NavigationPath()
-    
-    var body: some View {
-        NavigationStack(path: $path) {
-            NavigationLink("PLAY LEVEL 1") {
-                LevelOne()
-            }
-            Text(playerName)
-        }
-    }
-}
-
 struct LevelOne: View {
+    
     @State
     private var path = NavigationPath()
     
@@ -40,12 +17,22 @@ struct LevelOne: View {
     @State // Determine if user can move on to next level.
     var levelWon = false
     
+    var playerName: String = ""
+    
+    init(playerName: String? = "Player Name") {
+        self.playerName = playerName!
+        print("game started as \(playerName!)")
+    }
+    
+    
+    
     var body: some View {
         
         NavigationStack(path: $path) {
             ZStack {
                 Color(red: 0.48, green: 0.28, blue: 0.26)
             } // ZSTACK
+            .navigationBarHidden(true)
             .overlay(
                 VStack{
                     Text("Unscramble")
@@ -141,7 +128,7 @@ struct LevelOne: View {
                         
                         if (levelWon) {
                             NavigationLink("PLAY LEVEL 2") {
-                                LevelTwo()
+                                LevelTwo(playerName: playerName)
                             }
                             .fixedSize().frame(width: 280, height: 58, alignment: .center)// NAVIGATION LINK
                             .font(.system(size: 32, weight: .bold))
@@ -159,6 +146,7 @@ struct LevelOne: View {
             ) // OVERLAY
             .background(Color(red: 0.2, green: 0.1, blue: 0.1 ))
         } // NAVIGATION STACK
+
     } // VIEW
     
     func submitAnswer(){
@@ -186,12 +174,22 @@ struct LevelTwo: View {
     @State // Determine if user can move on to next level.
     var levelWon = false
     
+    
+    var playerName: String = ""
+    
+    init(playerName: String? = "Player Name") {
+        self.playerName = playerName!
+        print("game started as \(playerName!)")
+    }
+    
+    
     var body: some View {
         
         NavigationStack(path: $path) {
             ZStack {
                 Color(red: 0.48, green: 0.28, blue: 0.26)
             } // ZSTACK
+            .navigationBarHidden(true)
             .overlay(
                 VStack{
                     Text("Unscramble")
@@ -287,7 +285,7 @@ struct LevelTwo: View {
                         
                         if (levelWon) {
                             NavigationLink("PLAY LEVEL 3") {
-                                LevelThree()
+                                LevelThree(playerName: playerName)
                             }
                             .fixedSize().frame(width: 280, height: 58, alignment: .center)// NAVIGATION LINK
                             .font(.system(size: 32, weight: .bold))
@@ -329,12 +327,22 @@ struct LevelThree: View {
     @State // Determine if user can move on to next level.
     var levelWon = false
     
+    var playerName: String = ""
+    
+    init(playerName: String? = "Player Name") {
+        self.playerName = playerName!
+        print("game started as \(playerName!)")
+    }
+    
+    
+    
     var body: some View {
         
         NavigationStack(path: $path) {
             ZStack {
                 Color(red: 0.48, green: 0.28, blue: 0.26)
             } // ZSTACK
+            .navigationBarHidden(true)
             .overlay(
                 VStack{
                     Text("Unscramble")
@@ -428,9 +436,21 @@ struct LevelThree: View {
                             .font(.system(size: 24))
                             .foregroundColor(Color.white)
                         
+                        if (levelWon) {
+                            NavigationLink("END GAME") {
+                                WinScreenView(playerName: playerName)
+                            }
+                            .fixedSize().frame(width: 280, height: 58, alignment: .center)// NAVIGATION LINK
+                            .font(.system(size: 32, weight: .bold))
+                            .border(Color.black, width: 2)
+                            .background(Color(red: 0.9, green: 0.78, blue: 0.3))
+                            .foregroundColor(Color(red: 0.55, green: 0.45, blue: 0.15))
 
-                        Text("    ")
-                            .fixedSize().frame(width: 332, height: 58, alignment: .center)
+                            
+                        } else {
+                            Text("    ")
+                                .fixedSize().frame(width: 332, height: 58, alignment: .center)
+                        }
                     
                     }
                 } // VSTACK
@@ -480,5 +500,5 @@ struct LevelThree: View {
 //}
 
 #Preview {
-    PlayView()
+    LevelOne()
 }

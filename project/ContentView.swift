@@ -15,13 +15,14 @@ struct ContentView: View {
     @State private var usernamePlaceholder: String = "Player Name"
     @State private var userImage: Image? = nil
     @State private var usernameField: String = "Player Name"
-    
+     
     
     var body: some View {
         NavigationStack {
             ZStack {
                 Color(red: 0.48, green: 0.28, blue: 0.26)
             } // ZSTACK
+
             .overlay(
                 VStack {
                     Text(title)
@@ -54,7 +55,7 @@ struct ContentView: View {
                         .padding(.bottom, 40)
                     
                     NavigationLink(destination: {
-                        PlayView(playerName: usernameField)
+                        LevelOne(playerName: usernameField)
 
                     }, label: {
                         Text("PLAY")
@@ -66,7 +67,6 @@ struct ContentView: View {
                             .padding()
                             .frame(width: 100)
                     } // BUTTON -> LABEL
-                                   
                 )
                         .fixedSize().frame(width: 332, height: 84, alignment: .center)
                         .border(Color.black, width: 3)
@@ -98,9 +98,9 @@ struct ContentView: View {
             ) // OVERLAY
         .background(Color(red: 0.2, green: 0.1, blue: 0.1 ))
         } // NAVIGATION STACK
-
+        .navigationBarHidden(true)
     } // BODY -> VIEW
-    
+
 } // CONTENT VIEW
 
 #Preview {
