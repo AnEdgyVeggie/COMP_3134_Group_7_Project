@@ -2,7 +2,7 @@
 //  ContentView.swift
 //  project
 //
-//  Created by Ethan Sylvester on 2025-02-12.
+//  Created by Taylor Martin on 2025-02-26.
 //  Contributors:
 //  Ethan Sylvester: 101479568
 //  Taylor Martin: 100849882

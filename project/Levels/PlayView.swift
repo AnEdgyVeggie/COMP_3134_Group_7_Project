@@ -1,3 +1,14 @@
+//
+//  ContentView.swift
+//  project
+//
+//  Created by Amanda Gurney on 2025-02-28.
+//  Contributors:
+//  Ethan Sylvester: 101479568
+//  Taylor Martin: 100849882
+//  Amanda Gurney: 101443253
+
+
 import SwiftUI
 
 // Generate 3 random scrambled words for quick and easy access.
@@ -62,7 +73,7 @@ struct LevelOne: View {
                             HStack {
                                 Image("default_profile")
                                     .resizable()
-                                    .frame(width: 128, height: 128)
+                                    .frame(width: 96, height: 96)
                                 Image("sword_crossed")
                                 Image("skull")
                                     .resizable()
@@ -73,7 +84,7 @@ struct LevelOne: View {
                             Rectangle()
                                 .foregroundColor(Color(red: 0.35, green: 0.35, blue: 0.4))
 //                                .fixedSize()
-                                .frame(width: 330)
+                                .frame(width: 330, height: 50)
 
                             
                         }   .frame(width: 332, height: 186, alignment: .center)
