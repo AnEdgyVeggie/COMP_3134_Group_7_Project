@@ -16,7 +16,7 @@ struct WinScreenView: View {
     var playerName: String = ""
     let userPoints: Int
     
-    init(playerName: String? = "Player Name", userPoints: Int = 1500) {
+    init(playerName: String? = "Player Name", userPoints: Int = 0) {
         self.playerName = playerName!
         self.userPoints = userPoints
         print("game started as \(playerName!)")

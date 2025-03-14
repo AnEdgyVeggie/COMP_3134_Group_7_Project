@@ -16,7 +16,17 @@ private let levelOne = scrambleWord(usedWords: [""])
 private let levelTwo = scrambleWord(usedWords: [levelOne.0])
 private let levelThree = scrambleWord(usedWords: [levelOne.0, levelTwo.0])
 
+private var score = 0
+
 struct LevelOne: View {
+    
+    @State
+    private var scoreValue = 10
+    
+    @State
+    private var scoreMultiplier = 105
+    
+    let timer = Timer.publish(every: 0.5, on: .main, in: .common).autoconnect()
     
     @State
     private var path = NavigationPath()
@@ -44,6 +54,11 @@ struct LevelOne: View {
                 Color(red: 0.48, green: 0.28, blue: 0.26)
             } // ZSTACK
             .navigationBarHidden(true)
+            .onReceive(timer) { time in
+                if (scoreMultiplier > 0) {
+                    scoreMultiplier = scoreMultiplier - 1
+                }
+            }
             .overlay(
                 VStack{
                     Text("Unscramble")
@@ -95,10 +110,7 @@ struct LevelOne: View {
                         HStack {
                             TextField("GUESS", text: $userGuess)
                                 .onSubmit {
-                                    if (guessWord(guess: userGuess, answer: levelOne.0)) {
-                                        successMsg = "You Win!"
-                                        levelWon = true
-                                    }
+                                    submitAnswer()
                                 }
                                 .background(Color(red: 0.92, green: 0.85, blue: 0.7))
                                 .font(.title)
@@ -164,17 +176,32 @@ struct LevelOne: View {
         
         if (guessWord(guess: userGuess, answer: levelOne.0)) {
             successMsg = "You Win!"
-            print(successMsg)
             levelWon = true
+            score = scoreValue * scoreMultiplier
+        } else {
+            if (scoreValue > 1) {
+                scoreValue -= 1
+            }
         }
-
     }
-    
-    
 }
 
 
+
+
+
+
 struct LevelTwo: View {
+    
+    @State
+    private var scoreValue = 10
+    
+    @State
+    private var scoreMultiplier = 105
+    
+    let timer = Timer.publish(every: 0.5, on: .main, in: .common).autoconnect()
+    
+    
     @State
     private var path = NavigationPath()
     
@@ -185,14 +212,12 @@ struct LevelTwo: View {
     @State // Determine if user can move on to next level.
     var levelWon = false
     
-    
     var playerName: String = ""
     
     init(playerName: String? = "Player Name") {
         self.playerName = playerName!
         print("game started as \(playerName!)")
     }
-    
     
     var body: some View {
         
@@ -201,6 +226,11 @@ struct LevelTwo: View {
                 Color(red: 0.48, green: 0.28, blue: 0.26)
             } // ZSTACK
             .navigationBarHidden(true)
+            .onReceive(timer) { time in
+                if (scoreMultiplier > 0) {
+                    scoreMultiplier = scoreMultiplier - 1
+                }
+            }
             .overlay(
                 VStack{
                     Text("Unscramble")
@@ -240,7 +270,6 @@ struct LevelTwo: View {
                              
                             Rectangle()
                                 .foregroundColor(Color(red: 0.35, green: 0.35, blue: 0.4))
-//                                .fixedSize()
                                 .frame(width: 330)
 
                             
@@ -252,10 +281,7 @@ struct LevelTwo: View {
                         HStack {
                             TextField("GUESS", text: $userGuess)
                                 .onSubmit {
-                                    if (guessWord(guess: userGuess, answer: levelTwo.0)) {
-                                        successMsg = "You Win!"
-                                        levelWon = true
-                                    }
+                                    submitAnswer()
                                 }
                                 .background(Color(red: 0.92, green: 0.85, blue: 0.7))
                                 .font(.title)
@@ -315,19 +341,32 @@ struct LevelTwo: View {
             .background(Color(red: 0.2, green: 0.1, blue: 0.1 ))
         } // NAVIGATION STACK
     } // VIEW
-    
-    func submitAnswer() {
+    func submitAnswer(){
+        
         if (guessWord(guess: userGuess, answer: levelTwo.0)) {
             successMsg = "You Win!"
-            print(successMsg)
             levelWon = true
+            score += scoreValue * scoreMultiplier
+        } else {
+            if (scoreValue > 1) {
+                scoreValue -= 1
+            }
         }
     }
-    
-    
 }
 
+
 struct LevelThree: View {
+
+    @State
+    private var scoreValue = 10
+    
+    @State
+    private var scoreMultiplier = 105
+    
+    let timer = Timer.publish(every: 0.5, on: .main, in: .common).autoconnect()
+    
+    
     @State
     private var path = NavigationPath()
     
@@ -345,8 +384,6 @@ struct LevelThree: View {
         print("game started as \(playerName!)")
     }
     
-    
-    
     var body: some View {
         
         NavigationStack(path: $path) {
@@ -354,12 +391,16 @@ struct LevelThree: View {
                 Color(red: 0.48, green: 0.28, blue: 0.26)
             } // ZSTACK
             .navigationBarHidden(true)
+            .onReceive(timer) { time in
+                if (scoreMultiplier > 0) {
+                    scoreMultiplier = scoreMultiplier - 1
+                }
+            }
             .overlay(
                 VStack{
                     Text("Unscramble")
                         .font(.system(size: 40, weight: .heavy))
                         .foregroundColor(Color(red: 0.9, green: 0.78, blue: 0.3))
-//                        .padding(.vertical, 40)
                     HStack {
                         ForEach(Array(levelThree.1), id: \.self) { char in
                             Text(String(char))
@@ -393,7 +434,6 @@ struct LevelThree: View {
                              
                             Rectangle()
                                 .foregroundColor(Color(red: 0.35, green: 0.35, blue: 0.4))
-//                                .fixedSize()
                                 .frame(width: 330)
 
                             
@@ -405,10 +445,7 @@ struct LevelThree: View {
                         HStack {
                             TextField("GUESS", text: $userGuess)
                                 .onSubmit {
-                                    if (guessWord(guess: userGuess, answer: levelThree.0)) {
-                                        successMsg = "You Win!"
-                                        levelWon = true
-                                    }
+                                    submitAnswer()
                                 }
                                 .background(Color(red: 0.92, green: 0.85, blue: 0.7))
                                 .font(.title)
@@ -449,7 +486,7 @@ struct LevelThree: View {
                         
                         if (levelWon) {
                             NavigationLink("END GAME") {
-                                WinScreenView(playerName: playerName)
+                                WinScreenView(playerName: playerName, userPoints: score)
                             }
                             .fixedSize().frame(width: 280, height: 58, alignment: .center)// NAVIGATION LINK
                             .font(.system(size: 32, weight: .bold))
@@ -457,7 +494,6 @@ struct LevelThree: View {
                             .background(Color(red: 0.9, green: 0.78, blue: 0.3))
                             .foregroundColor(Color(red: 0.55, green: 0.45, blue: 0.15))
 
-                            
                         } else {
                             Text("    ")
                                 .fixedSize().frame(width: 332, height: 58, alignment: .center)
@@ -470,45 +506,20 @@ struct LevelThree: View {
         } // NAVIGATION STACK
     } // VIEW
     
-    func submitAnswer() {
+    func submitAnswer(){
+        
         if (guessWord(guess: userGuess, answer: levelThree.0)) {
             successMsg = "You Win!"
-            print(successMsg)
             levelWon = true
+            score += scoreValue * scoreMultiplier
+        } else {
+            if (scoreValue > 1) {
+                scoreValue -= 1
+            }
         }
     }
     
-    
 }
-
-//struct LevelThree: View {
-//    @State
-//    private var path = NavigationPath()
-//    
-//    @State // User's guess.
-//    private var userGuess = ""
-//    @State // Message sent when successful.
-//    private var successMsg: String?
-//    @State // Determine if user can move on to next level.
-//    var levelWon = false
-//    
-//    var body: some View {
-//        // Show the word to unscramble.
-//        Text(levelThree.1)
-//        
-//        VStack{
-//            TextField("GUESS", text: $userGuess)
-//                .onSubmit {
-//                    if (guessWord(guess: userGuess, answer: levelThree.0)) {
-//                        successMsg = "You Win!"
-//                        levelWon = true
-//                    }
-//                }
-//        }
-//        
-//        Text(successMsg ?? "")
-//    }
-//}
 
 #Preview {
     LevelOne()
