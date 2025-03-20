@@ -14,15 +14,18 @@ struct ToastView: View {
     
     var body: some View {
         // toast design
-        VStack {
-            if isVisible {
+        if isVisible {
+            ZStack {
+                Color(red: 0.92, green: 0.85, blue: 0.7)
+                    // removing white space below toast
+                    .ignoresSafeArea(.all, edges: .bottom)
+                
                 Text(toastMessage)
                     .font(.system(size: 24, weight: .bold))
-                    .background(Color.red)
-                    .padding(5)
-                    .cornerRadius(10)
+                    .foregroundStyle(.black)
+                    .padding()
             }
+            .frame(maxHeight: 35)
         }
-        .foregroundStyle(.teal)
     }
 }
