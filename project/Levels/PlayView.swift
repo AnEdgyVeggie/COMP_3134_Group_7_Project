@@ -37,6 +37,8 @@ struct LevelOne: View {
     private var successMsg: String?
     @State // Determine if user can move on to next level.
     var levelWon = false
+    @State
+    private var toggleToast = false
     
     var playerName: String = ""
     
@@ -168,6 +170,10 @@ struct LevelOne: View {
                 } // VSTACK
             ) // OVERLAY
             .background(Color(red: 0.2, green: 0.1, blue: 0.1 ))
+            
+            // TOAST VIEW COMPONENT
+            ToastView(isVisible: $toggleToast)
+            
         } // NAVIGATION STACK
 
     } // VIEW
@@ -182,14 +188,11 @@ struct LevelOne: View {
             if (scoreValue > 1) {
                 scoreValue -= 1
             }
+            // show toast to user if guess is incorrect
+            toggleToast = true
         }
     }
 }
-
-
-
-
-
 
 struct LevelTwo: View {
     
@@ -209,6 +212,8 @@ struct LevelTwo: View {
     private var userGuess = ""
     @State // Message sent when successful.
     private var successMsg: String?
+    @State
+    private var toggleToast = false
     @State // Determine if user can move on to next level.
     var levelWon = false
     
@@ -339,6 +344,10 @@ struct LevelTwo: View {
                 } // VSTACK
             ) // OVERLAY
             .background(Color(red: 0.2, green: 0.1, blue: 0.1 ))
+            
+            // TOAST VIEW COMPONENT
+            ToastView(isVisible: $toggleToast)
+            
         } // NAVIGATION STACK
     } // VIEW
     func submitAnswer(){
@@ -351,6 +360,9 @@ struct LevelTwo: View {
             if (scoreValue > 1) {
                 scoreValue -= 1
             }
+            
+            // show toast to user if guess is incorrect
+            toggleToast = true
         }
     }
 }
@@ -374,6 +386,8 @@ struct LevelThree: View {
     private var userGuess = ""
     @State // Message sent when successful.
     private var successMsg: String?
+    @State
+    private var toggleToast = false
     @State // Determine if user can move on to next level.
     var levelWon = false
     
@@ -503,6 +517,10 @@ struct LevelThree: View {
                 } // VSTACK
             ) // OVERLAYS
             .background(Color(red: 0.2, green: 0.1, blue: 0.1 ))
+            
+            // TOAST VIEW COMPONENT
+            ToastView(isVisible: $toggleToast)
+            
         } // NAVIGATION STACK
     } // VIEW
     
@@ -516,6 +534,9 @@ struct LevelThree: View {
             if (scoreValue > 1) {
                 scoreValue -= 1
             }
+            
+            // show toast to user if guess is incorrect
+            toggleToast = true
         }
     }
     
