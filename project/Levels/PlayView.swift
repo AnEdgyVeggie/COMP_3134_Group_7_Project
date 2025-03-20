@@ -20,23 +20,18 @@ private var score = 0
 
 struct LevelOne: View {
     
-    @State
-    private var scoreValue = 10
-    
-    @State
-    private var scoreMultiplier = 105
+    @State private var scoreValue = 10
+    @State private var scoreMultiplier = 105
     
     let timer = Timer.publish(every: 0.5, on: .main, in: .common).autoconnect()
     
-    @State
-    private var path = NavigationPath()
+    @State private var path = NavigationPath()
+    @State private var userGuess = "" // User's guess.
+    @State private var successMsg: String? // Message sent when successful.
+    @State var levelWon = false // Determine if user can move on to next level.
     
-    @State // User's guess.
-    private var userGuess = ""
-    @State // Message sent when successful.
-    private var successMsg: String?
-    @State // Determine if user can move on to next level.
-    var levelWon = false
+    @State private var toastVisible = false // makes toast not visible
+    @State private var toastTimer: Timer? // timer for the toast
     
     var playerName: String = ""
     
@@ -44,8 +39,6 @@ struct LevelOne: View {
         self.playerName = playerName!
         print("game started as \(playerName!)")
     }
-    
-    
     
     var body: some View {
         
@@ -64,7 +57,7 @@ struct LevelOne: View {
                     Text("Unscramble")
                         .font(.system(size: 40, weight: .heavy))
                         .foregroundColor(Color(red: 0.9, green: 0.78, blue: 0.3))
-//                        .padding(.vertical, 40)
+                    //                        .padding(.vertical, 40)
                     HStack {
                         ForEach(Array(levelOne.1), id: \.self) { char in
                             Text(String(char))
@@ -95,12 +88,12 @@ struct LevelOne: View {
                                     .frame(width: 96, height: 96)
                                     .shadow(radius: 10)
                             }
-                             
+                            
                             Rectangle()
                                 .foregroundColor(Color(red: 0.35, green: 0.35, blue: 0.4))
-//                                .fixedSize()
+                            //                                .fixedSize()
                                 .frame(width: 330, height: 50)
-
+                            
                             
                         }   .frame(width: 332, height: 186, alignment: .center)
                             .background(Color(red: 0.55, green: 0.55, blue: 0.55))
@@ -120,8 +113,8 @@ struct LevelOne: View {
                             
                             Image("feather")
                                 .background(Color(red: 0.55, green: 0.45, blue: 0.15))
-                        
-                    } // HSTACK
+                            
+                        } // HSTACK
                         .fixedSize().frame(width: 332, height: 64, alignment: .center)
                         .border(Color.black, width: 2)
                         .background(Color(red: 0.92, green: 0.85, blue: 0.7))
@@ -129,7 +122,7 @@ struct LevelOne: View {
                         
                         Button() {
                             submitAnswer()
-
+                            
                         } label: {
                             Text("GUESS")
                                 .font(.system(size: 42, weight: .heavy))
@@ -158,7 +151,7 @@ struct LevelOne: View {
                             .border(Color.black, width: 2)
                             .background(Color(red: 0.9, green: 0.78, blue: 0.3))
                             .foregroundColor(Color(red: 0.55, green: 0.45, blue: 0.15))
-
+                            
                             
                         } else {
                             Text("    ")
@@ -168,6 +161,10 @@ struct LevelOne: View {
                 } // VSTACK
             ) // OVERLAY
             .background(Color(red: 0.2, green: 0.1, blue: 0.1 ))
+            
+            //
+            ToastView(isVisible: $toastVisible)
+            
         } // NAVIGATION STACK
 
     } // VIEW
@@ -182,35 +179,26 @@ struct LevelOne: View {
             if (scoreValue > 1) {
                 scoreValue -= 1
             }
+            // show toast to user if guess is incorrect
+            toggleToast(isVisible: $toastVisible, toastTimer: &toastTimer)
         }
     }
 }
 
-
-
-
-
-
 struct LevelTwo: View {
     
-    @State
-    private var scoreValue = 10
-    
-    @State
-    private var scoreMultiplier = 105
+    @State private var scoreValue = 10
+    @State private var scoreMultiplier = 105
     
     let timer = Timer.publish(every: 0.5, on: .main, in: .common).autoconnect()
     
+    @State private var path = NavigationPath()
+    @State private var userGuess = "" // User's guess.
+    @State private var successMsg: String? // Message sent when successful.
+    @State var levelWon = false // Determine if user can move on to next level.
     
-    @State
-    private var path = NavigationPath()
-    
-    @State // User's guess.
-    private var userGuess = ""
-    @State // Message sent when successful.
-    private var successMsg: String?
-    @State // Determine if user can move on to next level.
-    var levelWon = false
+    @State private var toastVisible = false // makes toast not visible
+    @State private var toastTimer: Timer? // timer for the toast
     
     var playerName: String = ""
     
@@ -236,7 +224,7 @@ struct LevelTwo: View {
                     Text("Unscramble")
                         .font(.system(size: 40, weight: .heavy))
                         .foregroundColor(Color(red: 0.9, green: 0.78, blue: 0.3))
-//                        .padding(.vertical, 40)
+                    //                        .padding(.vertical, 40)
                     HStack {
                         ForEach(Array(levelTwo.1), id: \.self) { char in
                             Text(String(char))
@@ -267,11 +255,11 @@ struct LevelTwo: View {
                                     .frame(width: 96, height: 96)
                                     .shadow(radius: 10)
                             }
-                             
+                            
                             Rectangle()
                                 .foregroundColor(Color(red: 0.35, green: 0.35, blue: 0.4))
                                 .frame(width: 330)
-
+                            
                             
                         }   .frame(width: 332, height: 186, alignment: .center)
                             .background(Color(red: 0.55, green: 0.55, blue: 0.55))
@@ -291,8 +279,8 @@ struct LevelTwo: View {
                             
                             Image("feather")
                                 .background(Color(red: 0.55, green: 0.45, blue: 0.15))
-                        
-                    } // HSTACK
+                            
+                        } // HSTACK
                         .fixedSize().frame(width: 332, height: 64, alignment: .center)
                         .border(Color.black, width: 2)
                         .background(Color(red: 0.92, green: 0.85, blue: 0.7))
@@ -300,7 +288,7 @@ struct LevelTwo: View {
                         
                         Button() {
                             submitAnswer()
-
+                            
                         } label: {
                             Text("GUESS")
                                 .font(.system(size: 42, weight: .heavy))
@@ -329,7 +317,7 @@ struct LevelTwo: View {
                             .border(Color.black, width: 2)
                             .background(Color(red: 0.9, green: 0.78, blue: 0.3))
                             .foregroundColor(Color(red: 0.55, green: 0.45, blue: 0.15))
-
+                            
                             
                         } else {
                             Text("    ")
@@ -339,6 +327,10 @@ struct LevelTwo: View {
                 } // VSTACK
             ) // OVERLAY
             .background(Color(red: 0.2, green: 0.1, blue: 0.1 ))
+            
+            // TOAST VIEW COMPONENT
+            ToastView(isVisible: $toastVisible)
+            
         } // NAVIGATION STACK
     } // VIEW
     func submitAnswer(){
@@ -351,175 +343,183 @@ struct LevelTwo: View {
             if (scoreValue > 1) {
                 scoreValue -= 1
             }
+            
+            // show toast to user if guess is incorrect
+            toggleToast(isVisible: $toastVisible, toastTimer: &toastTimer)
         }
     }
-}
-
-
-struct LevelThree: View {
-
-    @State
-    private var scoreValue = 10
-    
-    @State
-    private var scoreMultiplier = 105
-    
-    let timer = Timer.publish(every: 0.5, on: .main, in: .common).autoconnect()
     
     
-    @State
-    private var path = NavigationPath()
-    
-    @State // User's guess.
-    private var userGuess = ""
-    @State // Message sent when successful.
-    private var successMsg: String?
-    @State // Determine if user can move on to next level.
-    var levelWon = false
-    
-    var playerName: String = ""
-    
-    init(playerName: String? = "Player Name") {
-        self.playerName = playerName!
-        print("game started as \(playerName!)")
-    }
-    
-    var body: some View {
+    struct LevelThree: View {
         
-        NavigationStack(path: $path) {
-            ZStack {
-                Color(red: 0.48, green: 0.28, blue: 0.26)
-            } // ZSTACK
-            .navigationBarHidden(true)
-            .onReceive(timer) { time in
-                if (scoreMultiplier > 0) {
-                    scoreMultiplier = scoreMultiplier - 1
+        @State
+        private var scoreValue = 10
+        
+        @State
+        private var scoreMultiplier = 105
+        
+        let timer = Timer.publish(every: 0.5, on: .main, in: .common).autoconnect()
+        
+        @State private var path = NavigationPath()
+        @State private var userGuess = "" // User's guess.
+        @State private var successMsg: String? // Message sent when successful.
+        @State var levelWon = false // Determine if user can move on to next level.
+        
+        @State private var toastVisible = false // makes toast not visible
+        @State private var toastTimer: Timer? // timer for the toast
+        
+        var playerName: String = ""
+        
+        init(playerName: String? = "Player Name") {
+            self.playerName = playerName!
+            print("game started as \(playerName!)")
+        }
+        
+        var body: some View {
+            
+            NavigationStack(path: $path) {
+                ZStack {
+                    Color(red: 0.48, green: 0.28, blue: 0.26)
+                } // ZSTACK
+                .navigationBarHidden(true)
+                .onReceive(timer) { time in
+                    if (scoreMultiplier > 0) {
+                        scoreMultiplier = scoreMultiplier - 1
+                    }
                 }
-            }
-            .overlay(
-                VStack{
-                    Text("Unscramble")
-                        .font(.system(size: 40, weight: .heavy))
-                        .foregroundColor(Color(red: 0.9, green: 0.78, blue: 0.3))
-                    HStack {
-                        ForEach(Array(levelThree.1), id: \.self) { char in
-                            Text(String(char))
-                                .font(.system(size: 32, weight: .bold))
-                        }
-                        
-                    } // HSTACK
-                    .fixedSize()
-                    .frame(width: 332, height: 64, alignment: .center)
-                    .border(Color.black, width: 2)
-                    .background(Color(red: 0.92, green: 0.85, blue: 0.7))
-                    .padding(.bottom, 20)
-                    .font(.title)
-                    
-                    VStack {
+                .overlay(
+                    VStack{
+                        Text("Unscramble")
+                            .font(.system(size: 40, weight: .heavy))
+                            .foregroundColor(Color(red: 0.9, green: 0.78, blue: 0.3))
+                        HStack {
+                            ForEach(Array(levelThree.1), id: \.self) { char in
+                                Text(String(char))
+                                    .font(.system(size: 32, weight: .bold))
+                            }
+                            
+                        } // HSTACK
+                        .fixedSize()
+                        .frame(width: 332, height: 64, alignment: .center)
+                        .border(Color.black, width: 2)
+                        .background(Color(red: 0.92, green: 0.85, blue: 0.7))
+                        .padding(.bottom, 20)
+                        .font(.title)
                         
                         VStack {
                             
-                            Spacer()
+                            VStack {
+                                
+                                Spacer()
+                                
+                                HStack {
+                                    Image("default_profile")
+                                        .resizable()
+                                        .frame(width: 128, height: 128)
+                                    Image("sword_crossed")
+                                    Image("skull")
+                                        .resizable()
+                                        .frame(width: 96, height: 96)
+                                        .shadow(radius: 10)
+                                }
+                                
+                                Rectangle()
+                                    .foregroundColor(Color(red: 0.35, green: 0.35, blue: 0.4))
+                                    .frame(width: 330)
+                                
+                                
+                            }   .frame(width: 332, height: 186, alignment: .center)
+                                .background(Color(red: 0.55, green: 0.55, blue: 0.55))
+                                .border(Color.black, width: 2)
+                                .shadow(radius: 5)
                             
                             HStack {
-                                Image("default_profile")
-                                    .resizable()
-                                    .frame(width: 128, height: 128)
-                                Image("sword_crossed")
-                                Image("skull")
-                                    .resizable()
-                                    .frame(width: 96, height: 96)
-                                    .shadow(radius: 10)
-                            }
-                             
-                            Rectangle()
-                                .foregroundColor(Color(red: 0.35, green: 0.35, blue: 0.4))
-                                .frame(width: 330)
-
-                            
-                        }   .frame(width: 332, height: 186, alignment: .center)
-                            .background(Color(red: 0.55, green: 0.55, blue: 0.55))
+                                TextField("GUESS", text: $userGuess)
+                                    .onSubmit {
+                                        submitAnswer()
+                                    }
+                                    .background(Color(red: 0.92, green: 0.85, blue: 0.7))
+                                    .font(.title)
+                                    .frame(width: 240, height: 65, alignment: .center)
+                                    .padding(.leading)
+                                
+                                
+                                Image("feather")
+                                    .background(Color(red: 0.55, green: 0.45, blue: 0.15))
+                                
+                            } // HSTACK
+                            .fixedSize().frame(width: 332, height: 64, alignment: .center)
                             .border(Color.black, width: 2)
-                            .shadow(radius: 5)
-                        
-                        HStack {
-                            TextField("GUESS", text: $userGuess)
-                                .onSubmit {
-                                    submitAnswer()
-                                }
-                                .background(Color(red: 0.92, green: 0.85, blue: 0.7))
-                                .font(.title)
-                                .frame(width: 240, height: 65, alignment: .center)
-                                .padding(.leading)
+                            .background(Color(red: 0.92, green: 0.85, blue: 0.7))
+                            .padding(.vertical, 20)
                             
-                            
-                            Image("feather")
-                                .background(Color(red: 0.55, green: 0.45, blue: 0.15))
-                        
-                    } // HSTACK
-                        .fixedSize().frame(width: 332, height: 64, alignment: .center)
-                        .border(Color.black, width: 2)
-                        .background(Color(red: 0.92, green: 0.85, blue: 0.7))
-                        .padding(.vertical, 20)
-                        
-                        Button() {
-                            submitAnswer()
-
-                        } label: {
-                            Text("GUESS")
-                                .font(.system(size: 42, weight: .heavy))
-                                .frame(width: 150)
-                                .padding()
-                                .foregroundColor(Color(red: 0.55, green: 0.45, blue: 0.15))
-                            Image("sword")
-                                .padding()
-                                .frame(width: 100)
-                        } // BUTTON ->
-                        .fixedSize().frame(width: 332, height: 84, alignment: .center)
-                        .border(Color.black, width: 3)
-                        .background(Color(red: 0.9, green: 0.78, blue: 0.3))
-                        .padding(.bottom, 10)
-                        
-                        Text(successMsg ?? "   ")
-                            .font(.system(size: 24))
-                            .foregroundColor(Color.white)
-                        
-                        if (levelWon) {
-                            NavigationLink("END GAME") {
-                                WinScreenView(playerName: playerName, userPoints: score)
-                            }
-                            .fixedSize().frame(width: 280, height: 58, alignment: .center)// NAVIGATION LINK
-                            .font(.system(size: 32, weight: .bold))
-                            .border(Color.black, width: 2)
+                            Button() {
+                                submitAnswer()
+                                
+                            } label: {
+                                Text("GUESS")
+                                    .font(.system(size: 42, weight: .heavy))
+                                    .frame(width: 150)
+                                    .padding()
+                                    .foregroundColor(Color(red: 0.55, green: 0.45, blue: 0.15))
+                                Image("sword")
+                                    .padding()
+                                    .frame(width: 100)
+                            } // BUTTON ->
+                            .fixedSize().frame(width: 332, height: 84, alignment: .center)
+                            .border(Color.black, width: 3)
                             .background(Color(red: 0.9, green: 0.78, blue: 0.3))
-                            .foregroundColor(Color(red: 0.55, green: 0.45, blue: 0.15))
-
-                        } else {
-                            Text("    ")
-                                .fixedSize().frame(width: 332, height: 58, alignment: .center)
+                            .padding(.bottom, 10)
+                            
+                            Text(successMsg ?? "   ")
+                                .font(.system(size: 24))
+                                .foregroundColor(Color.white)
+                            
+                            if (levelWon) {
+                                NavigationLink("END GAME") {
+                                    WinScreenView(playerName: playerName, userPoints: score)
+                                }
+                                .fixedSize().frame(width: 280, height: 58, alignment: .center)// NAVIGATION LINK
+                                .font(.system(size: 32, weight: .bold))
+                                .border(Color.black, width: 2)
+                                .background(Color(red: 0.9, green: 0.78, blue: 0.3))
+                                .foregroundColor(Color(red: 0.55, green: 0.45, blue: 0.15))
+                                
+                            } else {
+                                Text("    ")
+                                    .fixedSize().frame(width: 332, height: 58, alignment: .center)
+                            }
+                            
                         }
-                    
-                    }
-                } // VSTACK
-            ) // OVERLAYS
-            .background(Color(red: 0.2, green: 0.1, blue: 0.1 ))
-        } // NAVIGATION STACK
-    } // VIEW
-    
-    func submitAnswer(){
+                    } // VSTACK
+                ) // OVERLAYS
+                .background(Color(red: 0.2, green: 0.1, blue: 0.1 ))
+                
+                // TOAST VIEW COMPONENT
+                ToastView(isVisible: $toastVisible)
+                
+            } // NAVIGATION STACK
+        } // VIEW
         
-        if (guessWord(guess: userGuess, answer: levelThree.0)) {
-            successMsg = "You Win!"
-            levelWon = true
-            score += scoreValue * scoreMultiplier
-        } else {
-            if (scoreValue > 1) {
-                scoreValue -= 1
+        func submitAnswer(){
+            
+            if (guessWord(guess: userGuess, answer: levelThree.0)) {
+                successMsg = "You Win!"
+                levelWon = true
+                score += scoreValue * scoreMultiplier
+            } else {
+                if (scoreValue > 1) {
+                    scoreValue -= 1
+                }
+                
+                // show toast to user if guess is incorrect
+                toggleToast(isVisible: $toastVisible, toastTimer: &toastTimer)
             }
+            
         }
     }
-    
 }
+    
 
 #Preview {
     LevelOne()
