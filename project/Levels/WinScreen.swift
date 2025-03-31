@@ -9,6 +9,8 @@
 //  Amanda Gurney: 101443253
 
 import SwiftUI
+import CoreData
+
 
 struct WinScreenView: View {
     let title: String = "Winner!"
@@ -16,10 +18,12 @@ struct WinScreenView: View {
     var playerName: String = ""
     let userPoints: Int
     
+    
     init(playerName: String? = "Player Name", userPoints: Int = 0) {
         self.playerName = playerName!
         self.userPoints = userPoints
-        print("game started as \(playerName!)")
+        
+        saveData()
     }
     
     
@@ -75,8 +79,7 @@ struct WinScreenView: View {
                     }, label: {
                         Text("PLAY AGAIN")
                             .font(.system(size: 42, weight: .heavy))
-//                            .frame(width: 250)
-//                            .padding()
+
                             .foregroundColor(Color(red: 0.55, green: 0.45, blue: 0.15))
                         Image("sword")
                             .resizable()
@@ -117,6 +120,48 @@ struct WinScreenView: View {
         } // BODY -> VIEW
 
     } // CONTENT VIEW
+    
+
+    func setPersistentContainer() -> NSPersistentContainer {
+        return {
+            let container = NSPersistentContainer(name: "UserData")
+            container.loadPersistentStores(completionHandler: { (description, error) in
+                if let error = error as NSError? {
+                    print("Unresolved error \(error), \(error.userInfo)")
+                }
+            })
+            return container
+        }()
+    }
+
+    
+
+    func saveData() {
+        let persistentContainer: NSPersistentContainer = setPersistentContainer()
+        
+        let context = persistentContainer.viewContext
+        
+        guard let entityDescription = NSEntityDescription.entity(forEntityName: "GamePlayer", in: context) else {
+            print("ERROR IN RETRIEVING ENTITY DESCRIPTION IN WIN SCREEN")
+            return
+        }
+        
+        let newPlayer = NSManagedObject(entity: entityDescription, insertInto: context)
+        newPlayer.setValue(playerName, forKey: "username")
+        newPlayer.setValue(userPoints, forKey: "score")
+        
+        do {
+            try context.save()
+            print("Saved user in win screen")
+        } catch {
+            print("ERROR SAVING USER IN WIN SCREEN")
+        }
+        
+        
+    }
+    
+    
+    
 }
 
 #Preview {

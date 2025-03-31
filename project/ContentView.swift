@@ -73,22 +73,15 @@ struct ContentView: View {
                         .background(Color(red: 0.9, green: 0.78, blue: 0.3))
                         .padding(.bottom, 30)
                     
-                    HStack {
-                        NavigationLink(destination: {
-                            SettingsView()
-                        }, label: {
-                            Image("setting")
-                                .resizable().frame(width: 80, height: 80)
-                        })
+
                         NavigationLink(destination: {
                             LeaderboardView()
                         }, label: {
                             Image("scroll")
-                                .resizable().frame(width: 80, height: 80)
-                                .padding(.leading, 100)
+                                .resizable().frame(width: 100, height: 100)
+//                                .padding(.leading, 100)
                         })
 
-                    } // VSTACK
                     .fixedSize().frame(width: 200, height: 80)
                     
                 } // VSTACK

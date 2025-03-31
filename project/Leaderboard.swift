@@ -9,29 +9,18 @@
 //  Amanda Gurney: 101443253
 
 import SwiftUI
+import CoreData
+
 
 struct LeaderboardView: View {
     let title: String = "Leaderboard"
     
-    private var players: [Player] = [
-        Player(playerName: "player 4", score: 2000),
-        Player(playerName: "player 5", score: 1800),
-        Player(playerName: "player 2", score: 1700),
-        Player(playerName: "player 3", score: 1500),
-        Player(playerName: "player 1", score: 1260),
-        Player(playerName: "player 6", score: 1100),
-        Player(playerName: "player 15", score: 1050),
-        Player(playerName: "player 12", score: 1000),
-        Player(playerName: "player 13", score: 950),
-        Player(playerName: "player 11", score: 900),
-        Player(playerName: "player 16", score: 800),
-    ]
+    private var players: [GamePlayer] = [  ]
     
-//    private var seperatePlayers: [Player]
     
-//    init() {
-//        self.seperatePlayers = seperateTopPlayers()
-//    }
+    init() {
+        players = fetchData()
+    }
 
     
     var body: some View {
@@ -41,6 +30,7 @@ struct LeaderboardView: View {
             } // ZSTACK
             .overlay(
                 VStack {
+                    
                     Text(title)
                         .font(.system(size: 40, weight: .heavy))
                         .foregroundColor(Color(red: 0.9, green: 0.78, blue: 0.3))
@@ -52,9 +42,9 @@ struct LeaderboardView: View {
                                 Image("medal_gold")
                                     .resizable()
                                     .frame(width: 48, height: 48, alignment: .center)
-                                Text(players[0].playerName.capitalized)
+                                Text(players[0].username.capitalized)
                                     .font(.system(size: 24))
-                                Text(String(players[0].score))
+                                Text("\(players[0].score)")
                                     .font(.system(size: 24))
                             }
                                 .frame(height: 52)
@@ -63,45 +53,39 @@ struct LeaderboardView: View {
                                 Image("medal_silver")
                                     .resizable()
                                     .frame(width: 48, height: 48, alignment: .center)
-                                Text(players[1].playerName.capitalized)
+                                Text(players[1].username.capitalized)
                                     .font(.system(size: 24))
-                                Text(String(players[1].score))
+                                Text("\(players[1].score)")
                                     .font(.system(size: 24))
                             }
-                                .frame(height: 52)
+                                .frame(height: 52) 
                             
                             GridRow {
                                 Image("medal_bronze")
                                     .resizable()
                                     .frame(width: 48, height: 48, alignment: .center)
-                                Text(players[2].playerName.capitalized)
+                                Text(players[2].username.capitalized)
                                     .font(.system(size: 24))
-                                Text(String(players[2].score))
+                                Text("\(players[2].score)")
                                     .font(.system(size: 24))
                             }
-                            .frame(width: 100 ,height: 52)
-                             
-                            
-
+                                .frame(height: 52)
 
                             ForEach(Array(seperateTopPlayers().enumerated()), id: \.offset) { index, player in
-
+                                
+                            
                                 GridRow{
                                     Text(String(index+4))
                                         .font(.system(size: 24))
-                                    Text(player.playerName.capitalized)
+                                    Text(player.username.capitalized)
                                         .font(.system(size: 24))
-                                    Text(String(player.score))
+                                    Text("\(player.score)")
                                         .font(.system(size: 24))
                                 }
                                 .frame(height: 52)
-
-
                             }
-                            
                         }
                         .padding(.vertical, 20)
-                        
                         
                     }
                     .frame(width: 332, height: 500, alignment: .center)
@@ -118,10 +102,10 @@ struct LeaderboardView: View {
                         Text("MAIN MENU")
                             .font(.system(size: 42, weight: .heavy))
                             .frame(width: 250)
-//                            .padding()
+
                             .foregroundColor(Color(red: 0.3, green: 0.3, blue: 0.3))
                         Image("sword")
-//                            .padding()
+
                             .frame(width: 60)
                     } // BUTTON -> LABEL
                     )
@@ -139,25 +123,54 @@ struct LeaderboardView: View {
     } // CONTENT VIEW
     
     
-    func seperateTopPlayers() -> [ Player ] {
-        var badPlayers: [Player] = []
+    func seperateTopPlayers() -> [ GamePlayer ] {
+        var badPlayers: [GamePlayer] = []
         for i in stride(from: 3, to: players.count, by: 1) {
-            print(players[i].playerName)
+
             badPlayers.append(players[i])
         }
         return badPlayers
     }
     
-    
+    func setPersistentContainer() -> NSPersistentContainer {
+        return {
+            let container = NSPersistentContainer(name: "UserData")
+            container.loadPersistentStores(completionHandler: { (description, error) in
+                if let error = error as NSError? {
+                    print("Unresolved error \(error), \(error.userInfo)")
+                }
+            })
+            return container
+        }()
+    }
+
+    func fetchData() -> [ GamePlayer ] {
+        var players : [GamePlayer] = []
+        let persistentContainer = setPersistentContainer()
+        
+        let context = persistentContainer.viewContext
+        let fetchReq = NSFetchRequest<GamePlayer>(entityName: "GamePlayer")
+        
+        do {
+            let results = try context.fetch(fetchReq)
+            
+            for result in results {
+                players.append(result)
+            }
+            
+        } catch {
+            print("could not retrieve players")
+        }
+        players.sort(by:  {$0.score.compare($1.score) == .orderedDescending} )
+        return players
+    }
     
 }
+
+
+
+
 
 #Preview {
     LeaderboardView()
-}
-
-struct Player: Identifiable {
-    let playerName: String
-    let score : Int
-    var id: String { playerName }
 }
