@@ -124,7 +124,7 @@ struct WinScreenView: View {
 
     func setPersistentContainer() -> NSPersistentContainer {
         return {
-            let container = NSPersistentContainer(name: "UserData")
+            let container = NSPersistentContainer(name: "PlayerData")
             container.loadPersistentStores(completionHandler: { (description, error) in
                 if let error = error as NSError? {
                     print("Unresolved error \(error), \(error.userInfo)")

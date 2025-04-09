@@ -14,20 +14,37 @@ import CoreData
 
 struct LeaderboardView: View {
     let title: String = "Leaderboard"
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    @State var timeToLoad = 10
     
-    private var players: [GamePlayer] = [  ]
+    @State private var players: [GamePlayer] = []
+    @State private var playerCount: Int = 0
     
+    @State private var loaded = false
     
-    init() {
-        players = fetchData()
-    }
+//    init() {
+
+//    }
 
     
     var body: some View {
-        NavigationView {
+       	 NavigationView {
             ZStack {
                 Color(red: 0.48, green: 0.28, blue: 0.26)
-            } // ZSTACK
+            }
+            .onReceive(timer) { time in
+                if (timeToLoad > 0) {
+                    if (self.players.count  == 0) {
+                        timeToLoad = timeToLoad - 1
+
+                    }
+                }
+
+            }// ZSTACK
+            .onAppear() {
+                players = fetchData()
+//                print(players)
+            }
             .overlay(
                 VStack {
                     
@@ -42,10 +59,19 @@ struct LeaderboardView: View {
                                 Image("medal_gold")
                                     .resizable()
                                     .frame(width: 48, height: 48, alignment: .center)
-                                Text(players[0].username.capitalized)
-                                    .font(.system(size: 24))
-                                Text("\(players[0].score)")
-                                    .font(.system(size: 24))
+                                if (self.playerCount > 0) {
+                                    Text(players[0].username.capitalized)
+                                        .font(.system(size: 24))
+                                    Text("\(players[0].score)")
+                                        .font(.system(size: 24))
+                                }
+                                else if (timeToLoad > 0) {
+                                    Text("Loading...")
+                                } else {
+                                    Text("No Player Data Found")
+                                        .font(.system(size: 20))
+                                }
+
                             }
                                 .frame(height: 52)
                             
@@ -53,21 +79,37 @@ struct LeaderboardView: View {
                                 Image("medal_silver")
                                     .resizable()
                                     .frame(width: 48, height: 48, alignment: .center)
-                                Text(players[1].username.capitalized)
-                                    .font(.system(size: 24))
-                                Text("\(players[1].score)")
-                                    .font(.system(size: 24))
+                                if (playerCount > 1) {
+                                    Text(players[0].username.capitalized)
+                                        .font(.system(size: 24))
+                                    Text("\(players[0].score)")
+                                        .font(.system(size: 24))
+                                }
+                                else if (timeToLoad > 0) {
+                                    Text("Loading...")
+                                } else {
+                                    Text("No Player Data Found")
+                                        .font(.system(size: 20))
+                                }
                             }
-                                .frame(height: 52) 
+                                .frame(height: 52)
                             
                             GridRow {
                                 Image("medal_bronze")
                                     .resizable()
                                     .frame(width: 48, height: 48, alignment: .center)
-                                Text(players[2].username.capitalized)
-                                    .font(.system(size: 24))
-                                Text("\(players[2].score)")
-                                    .font(.system(size: 24))
+                                if (players.count > 2) {
+                                    Text(players[0].username.capitalized)
+                                        .font(.system(size: 24))
+                                    Text("\(players[0].score)")
+                                        .font(.system(size: 24))
+                                }
+                                else if (timeToLoad > 0) {
+                                    Text("Loading...")
+                                } else {
+                                    Text("No Player Data Found")
+                                        .font(.system(size: 20))
+                                }
                             }
                                 .frame(height: 52)
 
@@ -134,10 +176,10 @@ struct LeaderboardView: View {
     
     func setPersistentContainer() -> NSPersistentContainer {
         return {
-            let container = NSPersistentContainer(name: "UserData")
+            let container = NSPersistentContainer(name: "PlayerData")
             container.loadPersistentStores(completionHandler: { (description, error) in
                 if let error = error as NSError? {
-                    print("Unresolved error \(error), \(error.userInfo)")
+                    print("Unresolved error \(error)")
                 }
             })
             return container
@@ -145,7 +187,7 @@ struct LeaderboardView: View {
     }
 
     func fetchData() -> [ GamePlayer ] {
-        var players : [GamePlayer] = []
+        var dbPlayers : [GamePlayer] = []
         let persistentContainer = setPersistentContainer()
         
         let context = persistentContainer.viewContext
@@ -153,21 +195,24 @@ struct LeaderboardView: View {
         
         do {
             let results = try context.fetch(fetchReq)
-            
+//            print(results.count)
+
             for result in results {
-                players.append(result)
+                dbPlayers.append(result)
             }
             
         } catch {
             print("could not retrieve players")
         }
-        players.sort(by:  {$0.score.compare($1.score) == .orderedDescending} )
-        return players
+        dbPlayers.sort(by:  {$0.score.compare($1.score) == .orderedDescending} )
+        print(dbPlayers.count)
+        self.playerCount = dbPlayers.count
+        print(playerCount)
+        print(self.playerCount)
+        return dbPlayers
     }
     
 }
-
-
 
 
 

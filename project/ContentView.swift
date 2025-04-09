@@ -24,7 +24,7 @@ struct ContentView: View {
             } // ZSTACK
 
             .overlay(
-                VStack {
+                LazyVStack {
                     Text(title)
                         .font(.system(size: 40, weight: .heavy))
                         .foregroundColor(Color(red: 0.9, green: 0.78, blue: 0.3))

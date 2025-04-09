@@ -37,7 +37,6 @@ struct LevelOne: View {
     
     init(playerName: String? = "Player Name") {
         self.playerName = playerName!
-        print("game started as \(playerName!)")
     }
     
     var body: some View {
@@ -204,7 +203,6 @@ struct LevelTwo: View {
     
     init(playerName: String? = "Player Name") {
         self.playerName = playerName!
-        print("game started as \(playerName!)")
     }
     
     var body: some View {
@@ -372,7 +370,6 @@ struct LevelTwo: View {
         
         init(playerName: String? = "Player Name") {
             self.playerName = playerName!
-            print("game started as \(playerName!)")
         }
         
         var body: some View {

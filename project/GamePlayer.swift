@@ -5,7 +5,6 @@
 //  Created by Ethan Sylvester on 2025-03-31.
 //
 import CoreData
-import UIKit
 
 @objc(GamePlayer)
 class GamePlayer: NSManagedObject{

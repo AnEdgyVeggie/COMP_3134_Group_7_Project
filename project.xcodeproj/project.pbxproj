@@ -29,9 +29,33 @@
 		AA9A9C3D2D5CEA7B00351D1E /* projectUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = projectUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		AAC8CD212DA6F9D600E747BF /* Exceptions for "project" folder in "project" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				.swift,
+			);
+			target = AA9A9C222D5CEA7800351D1E /* project */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		AAC8CD222DA6F9D600E747BF /* Exceptions for "project" folder in "Compile Sources" phase from "project" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = AA9A9C1F2D5CEA7800351D1E /* Sources */;
+			membershipExceptions = (
+				.swift,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		AA9A9C252D5CEA7800351D1E /* project */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				AAC8CD212DA6F9D600E747BF /* Exceptions for "project" folder in "project" target */,
+				AAC8CD222DA6F9D600E747BF /* Exceptions for "project" folder in "Compile Sources" phase from "project" target */,
+			);
 			explicitFolders = (
 				images,
 			);
